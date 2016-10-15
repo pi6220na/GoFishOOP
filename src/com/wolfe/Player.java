@@ -63,58 +63,63 @@ public class Player {
 
         if (hand.handMap.size() == 0 && Deck.cardCountRemaining == 0) {
             // if player has no cards and deck is empty, turn over
-            turnOver = true;
+            return;
         }
+
 
         while (!turnOver) {
 
             displayStartOfTurnInfo(players);
 
-            if (hand.handMap.size() > 0) {
 
-                int requestFrom;
-                if (playerType.equals(HUMAN)) {
-                    requestFrom = getPlayerToQuery(players);
-                } else {
-                    requestFrom = cGetPlayerToQuery(players);
-                }
+            if (hand.handMap.size() == 0 && Deck.cardCountRemaining > 0) {
+                System.out.println("Adding card to player's hand at beginning of main loop");
+                Card newCard = Deck.getACard();
+                hand.addCardToMap(newCard);
+            }
 
 
-                if (playerType.equals(HUMAN)) {
-                    requestCard = inputCardRequest();
-                } else {
-                    requestCard = cInputCardRequest();
-                }
+            int requestFrom;
+            if (playerType.equals(HUMAN)) {
+                requestFrom = getPlayerToQuery(players);
+            } else {
+                requestFrom = cGetPlayerToQuery(players);
+            }
 
-                opponent = players.get(requestFrom);         // get opponents hand from designated player
-                foundCard = opponent.hand.checkForMatch(requestCard);
+
+            if (playerType.equals(HUMAN)) {
+                requestCard = inputCardRequest();
+            } else {
+                requestCard = cInputCardRequest();
+            }
+
+            opponent = players.get(requestFrom);         // get opponents hand from designated player
+            foundCard = opponent.hand.checkForMatch(requestCard);
 
 //            }
 
-                if (foundCard) {
+            if (foundCard) {
 
-                    System.out.println();
-                    System.out.println("Found Card Asked For!");
-                    //ArrayList<Card> theCard = opponent.hand.getCardRequest(requestCard);
-                    hand.transferFrom(opponent.hand, requestCard);
+                System.out.println();
+                System.out.println("Found Card Asked For!");
+                //ArrayList<Card> theCard = opponent.hand.getCardRequest(requestCard);
+                hand.transferFrom(opponent.hand, requestCard);
 
+            } else {
+
+                System.out.println();
+                System.out.println("Going Fishing");
+                // go fish
+                Card newCard;
+                if (Deck.deck.size() > 0) {
+                    newCard = Deck.getACard();
+                    hand.addCardToMap(newCard);
+
+                    turnOver = !newCard.getRank().equals(requestCard);
                 } else {
-
-                    System.out.println();
-                    System.out.println("Going Fishing");
-                    // go fish
-                    Card newCard;
-                    if (Deck.deck.size() > 0) {
-                        newCard = Deck.getACard();
-                        hand.addCardToMap(newCard);
-
-                        turnOver = !newCard.getRank().equals(requestCard);
-                    } else {
-                        turnOver = true;
-                    }
+                    turnOver = true;
                 }
-
-            }   // testing location of end if
+            }
 
 
             boolean test = hand.checkForBook();
@@ -122,8 +127,8 @@ public class Player {
                 numBooks++;
             }
 
-//            if (hand.handMap.size() == 0 && Deck.cardCountRemaining == 0) {
-            if (hand.handMap.size() == 0) {
+            if (hand.handMap.size() == 0 && Deck.cardCountRemaining == 0) {
+//            if (hand.handMap.size() == 0) {
                 // if player has no cards and deck is empty, turn over
                 turnOver = true;
             }
@@ -162,16 +167,36 @@ public class Player {
         System.out.println();
         System.out.println("Which player do you want to query? (numeric 0, 1, 2, etc):");
 
-        int randPicker = random.nextInt(2);
-        Integer requestFrom;
-        System.out.println("Random generator number 0 - 2 = " + randPicker);
+        Integer requestFrom = 0;
+        if (GoFishMgr.playerPlaysQueue.size() < 3) {
 
-        if (randPicker == 0) {
-            System.out.println("Peeking first player in the queue");
-            requestFrom = GoFishMgr.playerPlaysQueue.peekFirst();
+            int randPicker = random.nextInt(2);
+            System.out.println("Random generator number 0 - 2 = " + randPicker);
+
+            if (randPicker == 0) {
+                System.out.println("Peeking first player in the queue");
+                requestFrom = GoFishMgr.playerPlaysQueue.peekFirst();
+            } else {
+                System.out.println("Peeking last player in the queue");
+                requestFrom = GoFishMgr.playerPlaysQueue.peekLast();
+            }
+
         } else {
-            System.out.println("Peeking last player in the queue");
-            requestFrom = GoFishMgr.playerPlaysQueue.peekLast();
+
+            int randPicker = random.nextInt(3);
+            System.out.println("Random generator number 0 - 3 = " + randPicker);
+
+            if (randPicker == 0) {
+                System.out.println("Peeking first player in the queue");
+                requestFrom = GoFishMgr.playerPlaysQueue.peekFirst();
+            } else if (randPicker == 1) {
+                System.out.println("Peeking a middle player in the queue");
+                requestFrom = GoFishMgr.playerPlaysQueue.get(randPicker);
+            } else if (randPicker == 2) {
+                System.out.println("Peeking last player in the queue");
+                requestFrom = GoFishMgr.playerPlaysQueue.peekLast();
+            }
+
         }
 
         System.out.println("random player to ask = " + requestFrom);
@@ -190,6 +215,8 @@ public class Player {
             for (Integer id : GoFishMgr.playerPlaysQueue) {
                 System.out.print(id + ", ");
             }
+
+            System.out.println();
 
             for (Integer id : GoFishMgr.playerPlaysQueue) {
                 Player temp = players.get(id);
@@ -216,21 +243,23 @@ public class Player {
 
         System.out.println("Size of playerPlaysQueue = " + GoFishMgr.playerPlaysQueue.size());
 
-        System.out.print("Available players: ");
+        System.out.println("Available players: ");
 
         for (Integer id : GoFishMgr.playerPlaysQueue) {
             System.out.print(id + ", ");
-        }
-
-        for (Integer id : GoFishMgr.playerPlaysQueue) {
             Player temp = players.get(id);
-            System.out.println(temp.getName() + " " + temp.getPlayerType());
+            System.out.print(temp.getName() + " " + temp.getPlayerType() + "  ");
             temp.hand.printHand();
+
         }
     }
 
 
     private String computeCardRequest() {
+
+        System.out.println();
+        System.out.println("in Player:computeCardRequest - hand.handMap.size() = " + hand.handMap.size());
+        System.out.println();
 
         int randPick = random.nextInt(hand.handMap.size());
         int counter = 0;

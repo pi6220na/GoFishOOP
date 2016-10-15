@@ -141,7 +141,7 @@ public class Hand {
 
     protected void printHand() {
 
-        System.out.println("entering printHand");
+        System.out.print("entering printHand - ");
 
         Iterator<Map.Entry<Integer, ArrayList<Card>>> iter = handMap.entrySet().iterator();
         while (iter.hasNext()) {

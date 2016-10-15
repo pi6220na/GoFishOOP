@@ -45,6 +45,8 @@ public class GoFishMgr {
         } while (numberOfBooksRemaining > 0);
 
 
+        System.out.println();
+        System.out.println("************* G A M E   O V E R ***************");
         for (Player player : players) {
             System.out.println("Player " + player.getName() + " number of books: " + player.numBooks);
         }
@@ -59,7 +61,11 @@ public class GoFishMgr {
         String morePlayers = "y";
         String name;
         String playerType;
+        int pCount;
         int playerIndex = 0;
+
+        System.out.println("Enter the number of players (2 thru 5): ");
+        pCount = numberScanner.nextInt();
 
         do {
 
@@ -69,16 +75,16 @@ public class GoFishMgr {
             playerType = stringScanner.nextLine();
 
             Player player = new Player(playerIndex, name, playerType);
-            players.add(playerIndex, player);
-            playerPlaysQueue.add(playerIndex);      // round robin queue
+            players.add(playerIndex, player);       // add player object to arraylist
+            playerPlaysQueue.add(playerIndex);      // index(ID) of player added to round robin queue
             playerIndex++;
 
             System.out.println("Enter more players? (y or n):");
             morePlayers = stringScanner.nextLine();
 
-        } while (morePlayers.equalsIgnoreCase("y") && playerIndex < 10);
+        } while (morePlayers.equalsIgnoreCase("y") && playerIndex < 6);
 
-        numberOfPlayers = playerIndex + 1;
+        numberOfPlayers = pCount;
         dealCount = (numberOfPlayers < 5) ? 7 : 5;
 
     }
