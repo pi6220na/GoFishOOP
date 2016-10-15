@@ -214,7 +214,8 @@ public class Player {
 
         System.out.println("Which player do you want to query? (numeric 0, 1, 2, etc):");
         int requestFrom = numberScanner.nextInt();
-        while (requestFrom == GoFishMgr.currentPlayerID || requestFrom > GoFishMgr.numberOfPlayers - 2) {
+//        while (requestFrom == GoFishMgr.currentPlayerID || requestFrom > GoFishMgr.numberOfPlayers - 2) {
+        while (requestFrom == GoFishMgr.currentPlayerID || requestFrom > GoFishMgr.numberOfPlayers - 1) {
             System.out.print("Available players: ");
 
             for (Integer id : GoFishMgr.playerPlaysQueue) {

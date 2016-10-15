@@ -82,6 +82,9 @@ public class GoFishMgr {
         System.out.println("Enter the number of players (2 thru 5): ");
         pCount = numberScanner.nextInt();
 
+        numberOfPlayers = pCount;
+        dealCount = (numberOfPlayers < 4) ? 7 : 5;
+
         do {
 
             System.out.println("Enter Player Name: ");
@@ -98,9 +101,6 @@ public class GoFishMgr {
             morePlayers = stringScanner.nextLine();
 
         } while (morePlayers.equalsIgnoreCase("y") && playerIndex < 6);
-
-        numberOfPlayers = pCount;
-        dealCount = (numberOfPlayers < 5) ? 7 : 5;
 
     }
 
