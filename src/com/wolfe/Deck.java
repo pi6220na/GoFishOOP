@@ -5,6 +5,10 @@ import java.util.Collections;
 
 /**
  * Created by Jeremy on 10/11/2016.
+ *
+ * - creates a deck of 52 playing cards
+ * - deals out one card at a time
+ *
  */
 public class Deck {
 

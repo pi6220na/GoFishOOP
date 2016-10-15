@@ -2,10 +2,12 @@ package com.wolfe;
 
 /**
  * Created by Jeremy on 10/11/2016.
+ *
+ * - holds Card instance variable information
+ *
  */
 
 public class Card {
-
 
     private int sequence;
     private String rank;
@@ -20,7 +22,7 @@ public class Card {
     }
 
 
-    protected static String convertRank(int i) {
+    static String convertRank(int i) {
 
         switch (i) {
 
@@ -74,30 +76,18 @@ public class Card {
     }
 
 
-
+//  setters not used, no need for them
 
     public int getSequence() {
         return sequence;
-    }
-
-    public void setSequence(int sequence) {
-        this.sequence = sequence;
     }
 
     public String getRank() {
         return rank;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
-
     public String getSuit() {
         return suit;
-    }
-
-    public void setSuit(String suit) {
-        this.suit = suit;
     }
 
 }

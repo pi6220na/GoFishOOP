@@ -1,5 +1,15 @@
 /**
- * Created by Jeremy on 10/11/2016.
+ * Created by Jeremy on 10/11/2016 - 10/15/2016
+ *
+ * Go Fish Card Game - uses rules from: http://www.bicyclecards.com/how-to-play/go-fish/
+ *
+ * Five Classes in this program:
+ *      GoFishMgr - main program: sets up game and players, runs main player select for next turn loop
+ *      Player - defines player variables and card "Hand", contains logic for playing out a player's turn
+ *      Hand - contains data structures to hold a hand and completed books
+ *      Card - defines a deck of cards
+ *      Deck - builds a Deck of Cards
+ *
  */
 package com.wolfe;
 
@@ -32,6 +42,9 @@ public class GoFishMgr {
         Deck.shuffleDeck();
         setupPlayers();
 
+        // main play loop. Pulls a player from front of queue and puts into play. Returns player
+        // to back of queue at end of turn.
+        // Continues until all 13 books formed.
         do {
 
             int playerIndex = playerPlaysQueue.pop(); // get next player from queue
@@ -56,6 +69,8 @@ public class GoFishMgr {
 
     } // end class main
 
+
+    // sets up game and players TODO needs input validations
     protected static void setupPlayers() {
 
         String morePlayers = "y";

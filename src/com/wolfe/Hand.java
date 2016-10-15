@@ -5,19 +5,14 @@ import java.util.*;
 /**
  * Created by Jeremy on 10/12/2016.
  *
- * holds a hand of player cards in a treemap (sorted map)
- *
- * builds a new hand at start of game from cards dealt from deck
- *
- * adds a card or cards to hand from deck or other player
- *
- * removes a card from hand
- *
- * removes all suits of a given rank for:
+ * - holds a hand of player cards in a treemap (sorted map)
+ * - builds a new hand at start of game from cards dealt from deck
+ * - adds a card or cards to hand from deck or other player
+ * - removes a card from hand
+ * - removes all suits of a given rank for:
  *      transfer to another player
  *      transfer to player's book
- *
- * prints out a hand
+ * - prints out a hand
  *
  */
 public class Hand {
@@ -32,6 +27,8 @@ public class Hand {
 
     }
 
+    // the requested card is in the format of A, 2, 3,... J, Q, K. First convert to integer 1 - 13, then
+    // see if in the designated player's hand.
     protected boolean checkForMatch(String requestedCard) {
 
         int index = convertRankToIndex(requestedCard);
@@ -41,6 +38,7 @@ public class Hand {
         return hasCard;
     }
 
+    // TODO not used, why not?
     protected ArrayList<Card> getCardRequest(String requestedCard) {
 
         int index = convertRankToIndex(requestedCard);
@@ -50,6 +48,8 @@ public class Hand {
         return theCard;
     }
 
+    // check for four cards of a rank in the currently active hand, make a book and remove from
+    // hand
     protected boolean checkForBook() {
 
         System.out.println("entering checkForBook");
@@ -71,6 +71,7 @@ public class Hand {
         return false;
     }
 
+    // makes a book of four cards
     private void makeBook(Map.Entry<Integer, ArrayList<Card>> entry) {
 
         Integer key = entry.getKey();
@@ -85,6 +86,7 @@ public class Hand {
     }
 
 
+    // gets source hand and copies card data to active hand
     protected void transferFrom(Hand sourceHand, String card) {
 
         int index = convertRankToIndex(card);
@@ -105,7 +107,7 @@ public class Hand {
     }
 
 
-
+    // at start of game, builds a new hand with dealCount number of cards
     protected void buildNewHand() {
 
         System.out.println("entering buildNewHand");
@@ -120,6 +122,7 @@ public class Hand {
         }
     }
 
+    // adds card from Deck to hand
     protected void addCardToMap(Card card) {
 
         // attempt to get existing key in map

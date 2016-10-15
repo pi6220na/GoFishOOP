@@ -15,7 +15,7 @@ import java.util.*;
  *      - if no matching card, draw a card from pool
  *      - accept matching card(s) and put in hand
  *      - check for books at end of each round
- *
+ *      - take another turn if appropriate
  *
  */
 public class Player {
@@ -34,12 +34,13 @@ public class Player {
     static String COMPUTER = "C";
     static String HUMAN = "H";
 
-    private int pIndex;
-    private String name;
-    private String playerType;
-    protected int numBooks;
-    protected Hand hand;
+    private int pIndex;         // player index/element position in arraylist
+    private String name;        // name
+    private String playerType;  // a player can be human driven or computer driven
+    protected int numBooks;     // number of books this player has formed
+    protected Hand hand;        // the player's hand of cards
 
+    // constructor
     public Player(int pIndex, String name, String playerType) {
 
         this.pIndex = pIndex;
@@ -53,6 +54,7 @@ public class Player {
     }
 
 
+    // this is the main player play loop
     protected void askForCard(ArrayList<Player> players) {
 
         boolean turnOver = false;
@@ -121,7 +123,7 @@ public class Player {
                 }
             }
 
-
+            // TODO figure out if this test is redundant (see below)
             boolean test = hand.checkForBook();
             if (test) {
                 numBooks++;
@@ -142,6 +144,7 @@ public class Player {
     }
 
 
+    // computer generated card request
     private String cInputCardRequest() {
 
 
@@ -153,7 +156,7 @@ public class Player {
         return requestCard;
     }
 
-
+    // human player asks for a card
     private String inputCardRequest() {
 
         System.out.println("What card do you want to ask for? (rank only A, 2, 3,... J, Q, K):");
@@ -162,6 +165,7 @@ public class Player {
         return requestCard;
     }
 
+    // computer determines player to ask more or less randomly
     private int cGetPlayerToQuery(ArrayList<Player> players) {
 
         System.out.println();
@@ -190,7 +194,7 @@ public class Player {
                 System.out.println("Peeking first player in the queue");
                 requestFrom = GoFishMgr.playerPlaysQueue.peekFirst();
             } else if (randPicker == 1) {
-                System.out.println("Peeking a middle player in the queue");
+                System.out.println("Getting a middle player in the queue");
                 requestFrom = GoFishMgr.playerPlaysQueue.get(randPicker);
             } else if (randPicker == 2) {
                 System.out.println("Peeking last player in the queue");
@@ -205,6 +209,7 @@ public class Player {
     }
 
 
+    // human determines which player to ask for a card from
     private int getPlayerToQuery(ArrayList<Player> players) {
 
         System.out.println("Which player do you want to query? (numeric 0, 1, 2, etc):");
@@ -232,6 +237,7 @@ public class Player {
     return requestFrom;
     }
 
+    // start of turn setup
     private void displayStartOfTurnInfo(ArrayList<Player> players) {
 
         System.out.println();
@@ -254,7 +260,7 @@ public class Player {
         }
     }
 
-
+    // computer randomly generates a card to request based on cards in it's hand
     private String computeCardRequest() {
 
         System.out.println();
